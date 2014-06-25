@@ -1,0 +1,24 @@
+{
+  "name": "silvercreekit.com",
+  "description": "Portfolio site for Silver Creek IT & Matthew Palmer",
+  "version": "0.0.0",
+  "authors": [
+    "Matthew Palmer"
+  ],
+  "private": true,
+  "homepage": "http://silvercreekit.com/",
+  "main": "docroot/index.html",
+  "ignore": [
+    "**/.*",
+    "**/*.txt",
+    "docroot/bower_components"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "jquery.stellar": "~0.6.2",
+    "jquery-waypoints": "~2.0.5",
+    "normalize.css": "~3.0.1",
+    "bourbon": "~4.0.2",
+    "neat": "~1.6.0"
+  }
+}
