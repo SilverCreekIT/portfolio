@@ -22,8 +22,8 @@ module.exports = function (grunt) {
 
         concurrent: {
             preCompile: ['jshint'],
-            development: ['concat', 'sass:development'],
-            production: ['uglify', 'sass:production'],
+            development: ['sass:development', 'concat:css', 'concat:js'],
+            production: ['htmlmin', 'uglify', 'sass:production', 'concat:css'],
             watch: ['watch:sass', 'watch:concat']
         },
 
@@ -39,9 +39,33 @@ module.exports = function (grunt) {
         },
 
         concat: {
-            dist: {
-                src: srcJS,
-                dest: 'docroot/main.js'
+            js: {
+                dist: {
+                    src: srcJS,
+                    dest: 'docroot/main.js'
+                }
+            },
+            css: {
+                dist: {
+                    src: [
+                        srcBower + 'normalize.css/normalize.css',
+                        'sass/main.css'
+                    ],
+                    dest: 'css/main.css'
+                }
+            }
+        },
+
+        htmlmin: {
+            options: {
+                removeComments: true,
+                removeCommentsFromCDATA: true,
+                collapseWhitespace: true,
+                caseSensitive: true,
+                minifyJS: true
+            },
+            files: {
+                'docroot/index.html': 'docroot/index.html'
             }
         },
 
@@ -57,17 +81,25 @@ module.exports = function (grunt) {
             }
         },
 
+        cssmin: {
+            minify: {
+                expand: true,
+                src: ['css/main.css'],
+                dest: 'docroot/main.css'
+            }
+        },
+
         sass: {
             development: {
                 options: {
                     unixNewlines: true,
                     style: 'nested',
-                    lineNumbers: true,
+                    loadPath: 'sass/main',
                     noCache: true,
                     banner: txtBanner
                 },
                 files: {
-                    'docroot/main.css': 'sass/main.sass'
+                    'sass/main.css': 'sass/main.sass'
                 }
             },
             production: {
@@ -75,11 +107,12 @@ module.exports = function (grunt) {
                     sourcemap: true,
                     unixNewlines: true,
                     style: 'compressed',
+                    loadPath: 'sass/main',
                     cacheLocation: 'sass/.cache',
                     banner: txtBanner
                 },
                 files: {
-                    'docroot/main.css': 'sass/main.sass'
+                    'sass/main.css': 'sass/main.sass'
                 }
             }
         },
@@ -98,7 +131,7 @@ module.exports = function (grunt) {
         ['concurrent:preCompile', 'concurrent:development']);
 
     grunt.registerTask('production',
-        ['concurrent:preCompile', 'concurrent:production']);
+        ['concurrent:preCompile', 'concurrent:production', 'cssmin']);
 
     grunt.registerTask('watcher', ['concurrent:watch']);
 
