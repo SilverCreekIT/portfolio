@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 
     require('load-grunt-tasks')(grunt, { scope: ['devDependencies'] });
 
-    var txtBanner = "// For a readable version please visit my GitHub\n\n";
+    var txtBanner = "// For a readable version please visit my GitHub @ https://github.com/SilverCreekIT/portfolio\n\n";
 
 
     // Source of all JS files to be compiled
@@ -23,7 +23,8 @@ module.exports = function (grunt) {
         concurrent: {
             preCompile: ['jshint'],
             development: ['sass:development', 'concat:css', 'concat:js'],
-            production: ['htmlmin', 'uglify', 'sass:production', 'concat:css'],
+            production1: ['htmlmin', 'uglify'],
+            production2: ['sass:production', 'concat:css'],
             watch: ['watch:sass', 'watch:concat']
         },
 
@@ -65,7 +66,7 @@ module.exports = function (grunt) {
                 minifyJS: true
             },
             files: {
-                'docroot/index.html': 'docroot/index.html'
+                'docroot/index.html': 'docroot/index.htm'
             }
         },
 
@@ -81,14 +82,6 @@ module.exports = function (grunt) {
             }
         },
 
-        cssmin: {
-            minify: {
-                expand: true,
-                src: ['css/main.css'],
-                dest: 'docroot/main.css'
-            }
-        },
-
         sass: {
             development: {
                 options: {
@@ -96,10 +89,9 @@ module.exports = function (grunt) {
                     style: 'nested',
                     loadPath: 'sass/main',
                     noCache: true,
-                    banner: txtBanner
                 },
                 files: {
-                    'sass/main.css': 'sass/main.sass'
+                    'docroot/main.css': 'sass/main.sass'
                 }
             },
             production: {
@@ -112,7 +104,7 @@ module.exports = function (grunt) {
                     banner: txtBanner
                 },
                 files: {
-                    'sass/main.css': 'sass/main.sass'
+                    'docroot/main.css': 'sass/main.sass'
                 }
             }
         },
@@ -131,7 +123,7 @@ module.exports = function (grunt) {
         ['concurrent:preCompile', 'concurrent:development']);
 
     grunt.registerTask('production',
-        ['concurrent:preCompile', 'concurrent:production', 'cssmin']);
+        ['concurrent:preCompile', 'concurrent:production']);
 
     grunt.registerTask('watcher', ['concurrent:watch']);
 
