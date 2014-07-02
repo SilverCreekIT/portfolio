@@ -20,13 +20,6 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        concurrent: {
-            development: ['concat:js', 'concat:css'],
-            production_0: ['htmlmin', 'sass:production'],
-            production_1: ['uglify', 'cssmin'],
-            watch: ['watch:sass', 'watch:concat']
-        },
-
         watch: {
             sass: {
                 files: 'sass/**/*',
@@ -53,20 +46,22 @@ module.exports = function (grunt) {
         },
 
         htmlmin: {
-            options: {
-                removeComments: true,
-                removeCommentsFromCDATA: true,
-                collapseWhitespace: true,
-                caseSensitive: true,
-                minifyJS: true
-            },
-            files: [
-                {
-                    expand: true,
-                    src: 'html/index.html',
-                    dest: 'docroot/index.html'
+            production: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {
+                    'docroot/index.html': 'html/index.html'
                 }
-            ]
+            }
+        },
+
+        copy: {
+            development: {
+                src: 'html/index.html',
+                dest: 'docroot/index.html'
+            }
         },
 
         uglify: {
@@ -131,11 +126,9 @@ module.exports = function (grunt) {
 
     // Task lists
     grunt.registerTask('default',
-        ['jshint', 'sass:development', 'concurrent:development']);
+        ['jshint', 'sass:development', 'concat', 'copy']);
 
     grunt.registerTask('production',
-        ['jshint', 'concurrent:production_0', 'concurrent:production_1']);
-
-    grunt.registerTask('watcher', ['concurrent:watch']);
+        ['jshint', 'htmlmin', 'sass:production', 'uglify', 'cssmin']);
 
 };

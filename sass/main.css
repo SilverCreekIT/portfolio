@@ -1,4 +1,5 @@
-// For a readable version please visit my GitHub @ https://github.com/SilverCreekIT/portfolio
-
-@import url(../bower_components/normalize.css/normalize.css);*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
-/*# sourceMappingURL=main.css.map */
+@import url(../bower_components/normalize.css/normalize.css);
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
