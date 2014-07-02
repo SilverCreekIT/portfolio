@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 
     // Source of all JS files to be compiled
     var srcBower = 'bower_components/',
-        srcJS = [
+        srcJs = [
             srcBower + 'jquery/dist/jquery.js',
             srcBower + 'jquery-waypoints/waypoints.js',
             srcBower + 'jquery.stellar/stellar.jquery.js',
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
 
         concat: {
             js: {
-                src: srcJS,
+                src: srcJs,
                 dest: 'docroot/main.js'
             },
             css: {
@@ -60,9 +60,13 @@ module.exports = function (grunt) {
                 caseSensitive: true,
                 minifyJS: true
             },
-            files: {
-                'docroot/index.html': 'docroot/index.htm'
-            }
+            files: [
+                {
+                    expand: true,
+                    src: 'html/index.html',
+                    dest: 'docroot/index.html'
+                }
+            ]
         },
 
         uglify: {
@@ -73,18 +77,19 @@ module.exports = function (grunt) {
                 banner: txtBanner
             },
             build: {
-                files: { 'docroot/main.js': srcJS }
+                files: { 'docroot/main.js': srcJs }
             }
         },
 
         cssmin: {
-            minify: {
-                expand: true,
-                src: [
-                    srcBower + 'normalize.css/normalize.css',
-                    'sass/*.css'
-                ],
-                dest: 'docroot/main.css'
+            compress: {
+                options: {
+                    expand: true,
+                    banner: txtBanner
+                },
+                files: {
+                    'docroot/main.css': 'sass/*.css'
+                }
             }
         },
 
