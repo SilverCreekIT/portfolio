@@ -2,7 +2,8 @@ module.exports = function (grunt) {
 
     require('load-grunt-tasks')(grunt, { scope: ['devDependencies'] });
 
-    var txtBanner = "// For a readable version please visit my GitHub @ https://github.com/SilverCreekIT/portfolio\n\n";
+    var txtBanner = "// For a readable version please visit my GitHub @ " +
+        "https://github.com/SilverCreekIT/portfolio\n";
 
 
     // Source of all JS files to be compiled
@@ -11,7 +12,6 @@ module.exports = function (grunt) {
             srcBower + 'jquery/dist/jquery.js',
             srcBower + 'jquery-waypoints/waypoints.js',
             srcBower + 'jquery.stellar/stellar.jquery.js',
-            'js/*.js',
             'js/**/*.js'
         ];
 
@@ -21,10 +21,9 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         concurrent: {
-            preCompile: ['jshint'],
-            development: ['sass:development', 'concat:css', 'concat:js'],
-            production1: ['htmlmin', 'uglify'],
-            production2: ['sass:production', 'concat:css'],
+            development: ['concat:js', 'concat:css'],
+            production_0: ['htmlmin', 'sass:production'],
+            production_1: ['uglify', 'cssmin'],
             watch: ['watch:sass', 'watch:concat']
         },
 
@@ -34,26 +33,22 @@ module.exports = function (grunt) {
                 tasks: ['sass:development']
             },
             concat: {
-                files: ['js/silvercreekit.js'],
-                task: ['concat']
+                files: 'js/**.js',
+                task: ['concat:js']
             }
         },
 
         concat: {
             js: {
-                dist: {
-                    src: srcJS,
-                    dest: 'docroot/main.js'
-                }
+                src: srcJS,
+                dest: 'docroot/main.js'
             },
             css: {
-                dist: {
-                    src: [
-                        srcBower + 'normalize.css/normalize.css',
-                        'sass/main.css'
-                    ],
-                    dest: 'css/main.css'
-                }
+                src: [
+                    srcBower + 'normalize.css/normalize.css',
+                    'sass/main.css'
+                ],
+                dest: 'docroot/main.css'
             }
         },
 
@@ -82,6 +77,17 @@ module.exports = function (grunt) {
             }
         },
 
+        cssmin: {
+            minify: {
+                expand: true,
+                src: [
+                    srcBower + 'normalize.css/normalize.css',
+                    'sass/*.css'
+                ],
+                dest: 'docroot/main.css'
+            }
+        },
+
         sass: {
             development: {
                 options: {
@@ -91,7 +97,7 @@ module.exports = function (grunt) {
                     noCache: true,
                 },
                 files: {
-                    'docroot/main.css': 'sass/main.sass'
+                    'sass/main.css': 'sass/main.sass'
                 }
             },
             production: {
@@ -104,14 +110,14 @@ module.exports = function (grunt) {
                     banner: txtBanner
                 },
                 files: {
-                    'docroot/main.css': 'sass/main.sass'
+                    'sass/main.css': 'sass/main.sass'
                 }
             }
         },
 
         jshint: {
             main: {
-                src: ['Gruntfile.js', 'js/*.js', 'js/**/*.js'],
+                src: ['Gruntfile.js', 'js/**/*.js'],
             }
         }
 
@@ -120,10 +126,10 @@ module.exports = function (grunt) {
 
     // Task lists
     grunt.registerTask('default',
-        ['concurrent:preCompile', 'concurrent:development']);
+        ['jshint', 'sass:development', 'concurrent:development']);
 
     grunt.registerTask('production',
-        ['concurrent:preCompile', 'concurrent:production']);
+        ['jshint', 'concurrent:production_0', 'concurrent:production:1']);
 
     grunt.registerTask('watcher', ['concurrent:watch']);
 

@@ -9708,5 +9708,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
 }).call(this);
 
 (function ($, undefined) { 'use strict';
-    
+
+    console.log('This works noooow!');
+
 })(jQuery);
