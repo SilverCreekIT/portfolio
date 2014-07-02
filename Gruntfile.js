@@ -129,7 +129,7 @@ module.exports = function (grunt) {
         ['jshint', 'sass:development', 'concurrent:development']);
 
     grunt.registerTask('production',
-        ['jshint', 'concurrent:production_0', 'concurrent:production:1']);
+        ['jshint', 'concurrent:production_0', 'concurrent:production_1']);
 
     grunt.registerTask('watcher', ['concurrent:watch']);
 
